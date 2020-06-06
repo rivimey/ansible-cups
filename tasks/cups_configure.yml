@@ -1,31 +1,31 @@
 ---
 - name: Copying over cupsd.conf using template if defined to {{cups_etc_location}}/cupsd.conf.
   template:
-    src: "{{cups_cupsd_conf_template}}"
-    dest: "{{cups_etc_location}}/cupsd.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
+    src: "{{ cups_cupsd_conf_template }}"
+    dest: "{{ cups_etc_location}}/cupsd.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_cupsd_conf_template|default("") != ""
 
 - name: Copying over cups-browsed.conf using template if defined to {{cups_etc_location}}/cups-browsed.conf.
   template:
-    src: "{{cups_cups_browsed_conf_template}}"
-    dest: "{{cups_etc_location}}/cups-browsed.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
+    src: "{{ cups_cups_browsed_conf_template }}"
+    dest: "{{ cups_etc_location}}/cups-browsed.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_cups_browsed_conf_template|default("") != ""
 
 - name: Copying over snmp.conf using template if defined to {{cups_etc_location}}/snmp.conf.
   template:
-    src: "{{cups_snmp_conf_template}}"
-    dest: "{{cups_etc_location}}/snmp.conf"
-    owner: "{{cups_etc_files_perms_owner}}"
-    group: "{{cups_etc_files_perms_grp}}"
-    mode: "{{cups_etc_files_mode}}"
+    src: "{{ cups_snmp_conf_template }}"
+    dest: "{{ cups_etc_location}}/snmp.conf"
+    owner: "{{ cups_etc_files_perms_owner }}"
+    group: "{{ cups_etc_files_perms_group }}"
+    mode: "{{ cups_etc_files_mode }}"
   register: restart_required
   when: cups_snmp_conf_template|default("") != ""
 
@@ -35,10 +35,10 @@
   when: (cups_source_ssl_private_key_location|default("") != "") and (cups_source_ssl_public_key_location|default("") != "")
 
 - name: restart cups service(s)
-  service: 
-    name: "{{item}}"
+  service:
+    name: "{{ item }}"
     state: restarted
-    enabled: yes
+    enabled: true
   with_items:
-    - "{{cups_services}}"
+    - "{{ cups_services }}"
   when: restart_required is defined and restart_required.changed
